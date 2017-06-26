@@ -15,14 +15,18 @@ def predictScores(features_train, labels_train, features_test, labels_test):
     scores.append(accuracy_score(labels_test, pred_dst))
     pred_svm = predict.predictBySVM(features_train, labels_train, features_test)
     scores.append(accuracy_score(labels_test, pred_svm))
-    pred_vote = predict.predictByVote([pred_naiveBayes, pred_dst, pred_svm])
+    pred_adaboost = predict.predictByAdaBoost(features_train, labels_train, features_test)
+    scores.append(accuracy_score(labels_test, pred_adaboost))
+    pred_random_forest = predict.predictByRandomForest(features_train, labels_train, features_test)
+    scores.append(accuracy_score(labels_test, pred_random_forest))
+    pred_vote = predict.predictByVote([pred_naiveBayes, pred_dst, pred_svm, pred_adaboost, pred_random_forest])
     scores.append(accuracy_score(labels_test, pred_vote))
     return scores
 
 def verifyAccuracy(full_data, full_labels):
     from sklearn.model_selection import KFold
     kf = KFold(n_splits=10)
-    df = pd.DataFrame(columns=["NaiveBayes", "DecisionTree", "SVM", "vote"])
+    df = pd.DataFrame(columns=["NaiveBayes", "DecisionTree", "SVM", "AdaBoost", "RandomForest","vote"])
     for train_index, test_index in kf.split(full_data):
         features_train = full_data.take(train_index)
         labels_train = full_labels.take(train_index)

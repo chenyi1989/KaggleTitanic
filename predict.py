@@ -19,6 +19,18 @@ def predictByDecisionTree(features, labels, test_features):
     clf.fit(features, labels)
     return clf.predict(test_features)
 
+from sklearn import ensemble
+def predictByAdaBoost(features, labels, test_features):
+    clf = ensemble.AdaBoostClassifier()
+    clf.fit(features, labels)
+    return clf.predict(test_features)
+
+def predictByRandomForest(features, labels, test_features):
+    clf = ensemble.RandomForestClassifier()
+    clf.fit(features, labels)
+    return clf.predict(test_features)
+
+
 def predictByHand(features, labels, test_features):
     predictions = []
     for _, passenger in test_features.iterrows():
